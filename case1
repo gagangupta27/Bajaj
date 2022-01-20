@@ -1,0 +1,427 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+namespace ConsoleApp2
+{
+    class Salary
+    {
+        public int gross;
+        public int net;
+        public int pf;
+        public int da;
+        public int hra;
+
+        public Salary(int gross,int net,int pf,int da,int hra)
+        {
+            this.net = net;
+            this.gross = gross; 
+            this.pf = pf;
+            this.hra = hra;
+            this.da = da;
+        }
+
+        public Salary()
+        {
+            this.net = 0;
+            this.gross = 0;
+            this.pf = 0;
+            this.hra = 0;
+            this.da = 0;
+        }
+
+        public Salary getDetails()
+        {
+            return this;
+        }
+
+        public void editDetails(int gross, int net, int pf, int da, int hra)
+        {
+            this.net = net;
+            this.gross = gross;
+            this.pf = pf;
+            this.hra = hra;
+            this.da = da;
+        }
+    }
+    class Attendence
+    {
+        public int absence;
+        public int noOfDays;
+        public int leave;
+
+        public Attendence()
+        {
+            absence = 0;
+            noOfDays = 0;
+            leave = 0;
+        }
+
+        public void editAttendence(int absence,int no,int leave)
+        {
+            this.absence = absence;
+            this.leave = leave;
+            this.noOfDays = no; 
+        }
+
+        public void addAttendence()
+        {
+            leave++;
+        }
+
+        public Attendence getDetails()
+        {
+            return this;
+        }
+    }
+
+    class Employee
+    {
+        public int id;
+        public string name;
+        public DepartMent department;
+        public string designation;
+        public Salary salary;
+        public Attendence attendence;
+
+        public Employee(int id,string name,DepartMent dept,string desig)
+        {
+            this.id = id;
+            this.name = name;
+            this.designation = desig;
+            this.salary = new Salary();
+            this.attendence = new Attendence();
+            this.department = dept;
+        }
+
+        public Employee getDetails()
+        {
+            return this;
+        }
+
+        public void editDetails(int id, string name, DepartMent dept, string desig,Salary sal,Attendence attn)
+        {
+            this.id = id;
+            this.name = name;
+            this.designation = desig;
+            this.salary = sal;
+            this.attendence = attn;
+            this.department = dept;
+        }
+    }
+    class DepartMent
+    {
+        public int noOfStaff;
+        public string name;
+        public Employee Manager;
+        public Employee[] staffDetails;
+
+        public DepartMent getDetails()
+        {
+            return this;
+        }
+
+        public DepartMent(string name)
+        {
+            noOfStaff = 0;
+            this.name = name;
+        }
+
+        public void addEmployee(Employee e)
+        {
+
+            int temp = this.noOfStaff;
+            Employee[] emp = new Employee[temp + 1];
+            for(int i = 0; i < emp.Length - 1; i++)
+            {
+                emp[i] = staffDetails[i];
+            }
+            emp[temp] = e;
+            this.staffDetails = emp;
+            this.noOfStaff = this.noOfStaff +1;
+        }
+
+        public void AssignManager(Employee m)
+        {
+            this.Manager = m;
+        }
+    }
+
+
+
+
+    class Program
+    {
+        public enum Departments
+        {
+            enginnering = 1,
+            data = 2,
+            accounts = 3
+        }
+        static void Main()
+        {
+            DepartMent data = new DepartMent("data");
+            DepartMent accounts = new DepartMent("accounts");
+            DepartMent engineering = new DepartMent("engineering");
+
+            Employee m1 = new Employee(1, "gagan", engineering, "manager");
+            Employee m2 = new Employee(1, "saiom", data, "manager");
+            Employee m3 = new Employee(1, "harsh", accounts, "manager");
+
+            data.AssignManager(m2);
+            engineering.AssignManager(m1);
+            accounts.AssignManager(m3);
+
+ 
+
+            int exit = 1;
+            while (exit != 0)
+            {
+                if (exit != 1)
+                    Console.WriteLine("\n\n");
+                exit++;
+                Console.WriteLine("options Menu:");
+                Console.WriteLine("1. add employees");
+                Console.WriteLine("2. view employee data");
+                Console.WriteLine("3. view department data");
+                Console.WriteLine("4. exit");
+                Console.Write("Enter option:");
+                int n = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("\n");
+
+                switch (n)
+                {
+                    case 1:
+                        {
+
+                            Console.WriteLine("Enter Department no:");
+                            Console.WriteLine("1. Engineering");
+                            Console.WriteLine("2. data");
+                            Console.WriteLine("3. accounts");
+                            Console.Write("Enter no:");
+                            int num = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("\n");
+
+                            switch (num)
+                            {
+                                case (int)Departments.enginnering:
+                                    {
+                                        Console.WriteLine("Enter Details of employee:");
+                                        Console.Write("ID: ");
+                                        int id = Convert.ToInt32(Console.ReadLine());
+                                        Console.Write("Name: ");
+                                        string name = Console.ReadLine();
+                                        Console.Write("Designation: ");
+                                        string desig = Console.ReadLine();
+
+                                        Employee e = new Employee(id, name, engineering, desig);
+                                        engineering.addEmployee(e);
+                                        break;
+                                    }
+                                case (int)Departments.data:
+                                    {
+                                        Console.WriteLine("Enter Details of employee:");
+                                        Console.Write("ID: ");
+                                        int id = Convert.ToInt32(Console.ReadKey());
+                                        Console.Write("Name: ");
+                                        string name = Console.ReadLine();
+                                        Console.Write("Designation: ");
+                                        string desig = Console.ReadLine();
+
+                                        Employee e = new Employee(id, name, data, desig);
+                                        data.addEmployee(e);
+                                        break;
+                                    }
+                                case (int)Departments.accounts:
+                                    {
+                                        Console.WriteLine("Enter Details of employee:");
+                                        Console.Write("ID: ");
+                                        int id = Convert.ToInt32(Console.ReadKey());
+                                        Console.Write("Name: ");
+                                        string name = Console.ReadLine();
+                                        Console.Write("Designation: ");
+                                        string desig = Console.ReadLine();
+
+                                        Employee e = new Employee(id, name, accounts, desig);
+                                        accounts.addEmployee(e);
+                                        break;
+                                    }
+                            }
+
+
+                            break;
+                        }
+                    case 2:
+                        {
+                            Console.WriteLine("Enter Department no:");
+                            Console.WriteLine("1. Engineering");
+                            Console.WriteLine("2. data");
+                            Console.WriteLine("3. accounts");
+                            Console.Write("Enter no:");
+                            int num = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("\n");
+
+                            switch (num)
+                            {
+                                case (int)Departments.enginnering:
+                                    {
+                                        Console.WriteLine("Enter employee ID:");
+                                        int id = Convert.ToInt32(Console.ReadLine());
+                                        int found = 0;
+                                        foreach(Employee e in engineering.staffDetails)
+                                        {
+                                            if(e.id == id)
+                                            {
+                                                found++;
+                                                Console.Write("Name: ");
+                                                Console.Write(e.name);
+                                                break;
+                                            }
+                                        }
+                                        if (found == 0)
+                                            Console.WriteLine("Employee not found");
+
+                                        break;
+                                    }
+                                case (int)Departments.data:
+                                    {
+                                        Console.WriteLine("Enter employee ID:");
+                                        int id = Convert.ToInt32(Console.ReadLine());
+                                        int found = 0;
+                                        foreach (Employee e in data.staffDetails)
+                                        {
+                                            if (e.id == id)
+                                            {
+                                                found++;
+                                                Console.Write("Name: ");
+                                                Console.Write(e.name);
+                                                break;
+                                            }
+                                        }
+                                        if (found == 0)
+                                            Console.WriteLine("Employee not found");
+
+                                        break;
+                                    }
+                                case (int)Departments.accounts:
+                                    {
+                                        Console.WriteLine("Enter employee ID:");
+                                        int id = Convert.ToInt32(Console.ReadLine());
+                                        int found = 0;
+                                        foreach (Employee e in accounts.staffDetails)
+                                        {
+                                            if (e.id == id)
+                                            {
+                                                found++;
+                                                Console.Write("Name: ");
+                                                Console.Write(e.name);
+                                                break;
+                                            }
+                                        }
+                                        if (found == 0)
+                                            Console.WriteLine("Employee not found");
+
+                                        break;
+                                    }
+                            }
+                            break;
+                        }
+                    case 3:
+                        {
+                            Console.WriteLine("Enter Department no:");
+                            Console.WriteLine("1. Engineering");
+                            Console.WriteLine("2. data");
+                            Console.WriteLine("3. accounts");
+                            Console.Write("Enter no:");
+                            int num = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("\n");
+
+                            switch (num)
+                            {
+                                case (int)Departments.enginnering:
+                                    {
+                                        Console.WriteLine("Department Details:");
+                                        Console.Write("Number of Staff: ");
+                                        Console.Write(engineering.noOfStaff);
+                                        Console.WriteLine("");
+                                        Console.Write("Name: ");
+                                        Console.Write(engineering.name);
+                                        Console.WriteLine("");
+                                        Console.Write("Manager name: ");
+                                        Console.Write(engineering.Manager.name);
+                                        Console.WriteLine("");
+
+                                        Console.WriteLine("DepartMent Employees:");
+                                        foreach(Employee emp in engineering.staffDetails)
+                                        {
+                                            Console.Write("Name: ");
+                                            Console.Write(emp.name);
+                                            Console.Write("\n");
+                                        }
+
+                                        break;
+                                    }
+                                case (int)Departments.data:
+                                    {
+                                        Console.WriteLine("Department Details:");
+                                        Console.Write("Number of Staff: ");
+                                        Console.Write(data.noOfStaff);
+                                        Console.WriteLine("");
+                                        Console.Write("Name: ");
+                                        Console.Write(data.name);
+                                        Console.WriteLine("");
+                                        Console.Write("Manager name: ");
+                                        Console.Write(data.Manager.name);
+                                        Console.WriteLine("");
+                                        Console.WriteLine("DepartMent Employees:");
+                                        foreach (Employee emp in data.staffDetails)
+                                        {
+                                            Console.Write("Name: ");
+                                            Console.Write(emp.name);
+                                            Console.Write("\n");
+                                        }
+                                        break;
+                                    }
+                                case (int)Departments.accounts:
+                                    {
+                                        Console.WriteLine("Department Details:");
+                                        Console.Write("Number of Staff: ");
+                                        Console.Write(accounts.noOfStaff);
+                                        Console.WriteLine("");
+                                        Console.Write("Name: ");
+                                        Console.Write(accounts.name);
+                                        Console.WriteLine("");
+                                        Console.Write("Manager name: ");
+                                        Console.Write(accounts.Manager.name);
+                                        Console.WriteLine("");
+                                        Console.WriteLine("DepartMent Employees:");
+                                        foreach (Employee emp in accounts.staffDetails)
+                                        {
+                                            Console.Write("Name: ");
+                                            Console.Write(emp.name);
+                                            Console.Write("\n");
+                                        }
+                                        break;
+                                    }
+                            }
+                            break;
+                        }
+                    case 4:
+                        {
+                            exit = 0;
+                            break;
+                        }
+                    default:
+                        Console.WriteLine("pls enter valid no");
+                        break;
+                }
+
+            }
+
+
+        }
+    }
+
+}
